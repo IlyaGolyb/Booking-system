@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Система бронирования - Вход</title>
+    
+    <!-- Стили для страницы входа (отдельный файл) -->
+    <link rel="stylesheet" href="css/auth.css">
+    <!-- Основные стили (для общих элементов, например кнопок) -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Главный контейнер формы входа -->
+    <div class="login-container">
+        <!-- Заголовок -->
+        <div class="login-header">
+            <h1><i class="fas fa-building"></i> Бронирование рабочих мест</h1>
+            <p>Войдите в систему для доступа к бронированию</p>
+        </div>
+        
+        <!-- Форма входа -->
+        <div class="login-form">
+            <!-- Поле логина (предзаполнено для удобства тестирования) -->
+            <div class="form-group">
+                <label for="username"><i class="fas fa-user"></i> Логин:</label>
+                <input type="text" id="username" placeholder="Введите логин" value="admin">
+            </div>
+            
+            <!-- Поле пароля (предзаполнено) -->
+            <div class="form-group">
+                <label for="password"><i class="fas fa-lock"></i> Пароль:</label>
+                <input type="password" id="password" placeholder="Введите пароль" value="admin123">
+            </div>
+            
+            <!-- Кнопка входа -->
+            <button id="login-btn" class="btn-primary">
+                <i class="fas fa-sign-in-alt"></i> Войти
+            </button>
+            
+            <!-- Блок с тестовыми данными (для демо) -->
+            <div class="demo-credentials">
+                <h4><i class="fas fa-info-circle"></i> Тестовые данные:</h4>
+                <p><strong>Админ:</strong> admin / admin123</p>
+                <p><strong>Сотрудник:</strong> user / user123</p>
+                <p><strong>Работник 2:</strong> employee1 / 123456</p>
+            </div>
+            
+            <!-- Блок для отображения ошибок входа -->
+            <div id="error-message" class="error-message"></div>
+        </div>
+    </div>
+
+    <!-- подключение библиотеки и скрипта -->
+    <script src="js/mock-api.js"></script>
+    <script src="js/login.js"></script> 
+</body>
+</html>

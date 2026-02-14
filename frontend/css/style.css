@@ -1,0 +1,179 @@
+/**
+ * style.css - Основные стили системы бронирования
+ * Содержит глобальные переменные цветовой схемы и базовые стили
+ * для всех компонентов интерфейса: кнопки, карточки, формы, модальные окна
+ */
+
+/* Глобавльные переменные */
+:root {
+    /* Основная цветовая палитра приложения */
+    --primary-color: #3498db;      /* Синий — основной цвет бренда, используется для кнопок и акцентов */
+    --primary-dark: #2980b9;        /* Тёмно-синий — для hover-эффектов на основных кнопках */
+    --secondary-color: #2ecc71;     /* Зелёный — для второстепенных действий */
+    --danger-color: #e74c3c;        /* Красный — для опасных действий (удаление, отмена) */
+    --warning-color: #f39c12;        /* Оранжевый — для предупреждений */
+    --dark-color: #2c3e50;          /* Тёмно-синий — для основного текста */
+    --light-color: #ecf0f1;          /* Светло-серый — для фонов */
+    --gray-color: #95a5a6;          /* Серый — для второстепенного текста и иконок */
+    --border-color: #ddd;            /* Светло-серый — для границ элементов */
+    --success-color: #27ae60;        /* Зелёный — для сообщений об успехе */
+}
+
+/* Базовый стиль */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  /* Современный шрифт без засечек */
+    margin: 0;                        /* Убираем отступы браузера */
+    background: #f5f7fa;              /* Светло-серый фон страницы */
+    color: var(--dark-color);          /* Основной цвет текста из переменных */
+}
+
+/* Утилиты */
+.hidden {
+    display: none !important;         /* Принудительно скрывает элемент */
+}
+
+/* Компоненты */
+/* Кнопки — базовый стиль для всех типов */
+.btn {
+    padding: 10px 20px;               /* Внутренние отступы для удобного клика */
+    border: none;                      /* Убираем стандартную рамку */
+    border-radius: 6px;                /* Скруглённые углы */
+    font-size: 14px;                   /* Размер текста */
+    font-weight: 600;                  /* Полужирное начертание */
+    cursor: pointer;                    /* Курсор-указатель при наведении */
+    transition: all 0.3s;               /* Плавная анимация всех свойств */
+    display: inline-flex;               /* Гибкое выравнивание иконки и текста */
+    align-items: center;                /* Выравнивание по вертикали */
+    gap: 8px;                           /* Отступ между иконкой и текстом */
+}
+
+/* Синяя кнопка — основное действие */
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);    /* Затемнение при наведении */
+}
+
+/* Серая кнопка — второстепенное действие */
+.btn-secondary {
+    background: #f8f9fa;
+    color: var(--dark-color);
+    border: 1px solid var(--border-color);  /* Тонкая рамка вместо фона */
+}
+
+.btn-secondary:hover {
+    background: #e9ecef;                /* Светло-серый фон при наведении */
+}
+
+/* Красная кнопка — опасное действие (удаление, отмена) */
+.btn-danger {
+    background: var(--danger-color);
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c0392b;                /* Более тёмный красный */
+}
+
+/* Зелёная кнопка — успешное действие (подтверждение) */
+.btn-success {
+    background: var(--success-color);
+    color: white;
+}
+
+/* Карточки — контейнеры для группировки контента */
+.card {
+    background: white;
+    border-radius: 10px;                /* Скруглённые углы */
+    padding: 20px;                       /* Внутренние отступы */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);  /* Лёгкая тень для объёма */
+    margin-bottom: 20px;                 /* Отступ между карточками */
+}
+
+/* ===== ФОРМЫ ===== */
+/* Поля ввода — общий стиль для input и select */
+.form-control {
+    width: 100%;                         /* Занимают всю ширину родителя */
+    padding: 10px;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s;        /* Плавное изменение цвета рамки */
+}
+
+.form-control:focus {
+    outline: none;                        /* Убираем стандартную обводку браузера */
+    border-color: var(--primary-color);    /* Подсветка синим при фокусе */
+}
+
+/* Модальные окна */
+/* Затемняющий фон под модальным окном */
+.modal {
+    display: none;                        /* Скрыто по умолчанию */
+    position: fixed;                      /* Фиксированное позиционирование */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);          /* Полупрозрачный чёрный фон */
+    z-index: 1000;                        /* Поверх всего контента */
+    align-items: center;
+    justify-content: center;
+}
+
+/* Белое окно с контентом */
+.modal-content {
+    background: white;
+    border-radius: 10px;
+    padding: 30px;
+    width: 90%;                           /* Адаптивная ширина */
+    max-width: 500px;                      /* Максимальная ширина на десктопе */
+    max-height: 90vh;                      /* Чтобы не уходило за экран */
+    overflow-y: auto;                       /* Прокрутка, если контент не помещается */
+}
+
+/* Заголовок модального окна */
+.modal-header {
+    display: flex;
+    justify-content: space-between;        /* Заголовок слева, крестик справа */
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-title {
+    margin: 0;
+    font-size: 20px;
+    color: var(--dark-color);
+}
+
+/* Кнопка закрытия (крестик) */
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--gray-color);
+}
+
+.modal-close:hover {
+    color: var(--danger-color);            /* Красный при наведении */
+}
+
+/* Основное содержимое модального окна */
+.modal-body {
+    margin-bottom: 20px;
+}
+
+/* Подвал модального окна с кнопками действий */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;             /* Кнопки прижаты к правому краю */
+    gap: 10px;                              /* Отступ между кнопками */
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}

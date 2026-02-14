@@ -1,0 +1,12 @@
+com\booking\model\Workplace.class
+com\booking\util\UserDataLoader.class
+com\booking\controller\WorkplaceController.class
+com\booking\controller\TestController.class
+com\booking\model\Booking.class
+com\booking\service\HdfsStorageService.class
+com\booking\controller\BookingController.class
+com\booking\model\User.class
+com\booking\BookingApplication.class
+com\booking\controller\AuthController.class
+com\booking\service\UserService.class
+com\booking\config\CharsetConfig.class

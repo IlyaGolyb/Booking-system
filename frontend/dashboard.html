@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карта офиса - Бронирование</title>
+    
+    <!-- Подключение стилей -->
+    <link rel="stylesheet" href="css/style.css">           <!-- Основные стили всего сайта -->
+    <link rel="stylesheet" href="css/office-map.css">      <!-- Стили специально для карты офиса -->
+    
+    <!-- Font Awesome для иконок (версия 6) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Flatpickr - библиотека для красивого выбора даты -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+    <!-- 1. Шапка сайта -->
+    <header class="header">
+        <div class="header-left">
+            <h1><i class="fas fa-building"></i> Бронирование рабочих мест</h1>
+        </div>
+        
+        <div class="header-right">
+            <div class="user-info">
+                <i class="fas fa-user-circle"></i>
+                <span id="username-display">Гость</span>  <!-- Сюда JS подставит имя пользователя -->
+                <button id="logout-btn" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-sign-out-alt"></i> Выйти
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. Основной контент -->
+    <div class="container">
+        <!-- 2.1 Левая боковая панель -->
+        <aside class="sidebar">
+            <!-- Блок информации о пользователе -->
+            <div class="card">
+                <h3><i class="fas fa-user"></i> Информация о пользователе</h3>
+                <div id="user-info"></div>  <!-- Сюда JS загрузит данные -->
+            </div>
+            
+            <!-- Блок "Мои бронирования" -->
+            <div class="card">
+                <h3><i class="fas fa-clock"></i> Мои бронирования</h3>
+                <div class="branch-filter">
+                    <label for="bookings-branch-filter">Филиал:</label>
+                    <select id="bookings-branch-filter" class="form-control-sm">
+                        <option value="all">Все филиалы</option>
+                        <option value="moscow">Москва</option>
+                        <option value="spb">Санкт-Петербург</option>
+                    </select>
+                </div>
+                <div id="my-bookings" class="bookings-list">
+                    <!-- Бронирования загрузятся через JS -->
+                </div>
+            </div>
+
+            <!-- блок занятых слотов выбранного места (появится при выборе) -->
+            <div class="card" id="place-bookings-card" style="display: none;">
+                <h3><i class="fas fa-calendar-alt"></i> <span id="selected-place-name">Занятые слоты</span></h3>
+                <div id="place-bookings-list" class="bookings-list">
+                    <div class="empty-message" style="text-align: center; color: #666; padding: 20px;">
+                        Выберите место, чтобы увидеть его занятые слоты
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Блок с правилами бронирования -->
+            <div class="card">
+                <h3><i class="fas fa-info-circle"></i> Правила</h3>
+                <ul class="rules-list">
+                    <li><i class="fas fa-check-circle"></i> Бронирование с 9:00 до 18:00</li>
+                    <li><i class="fas fa-check-circle"></i> Не более 3 бронирований в день</li>
+                    <li><i class="fas fa-check-circle"></i> Отмена за 1 час до начала</li>
+                    <li><i class="fas fa-check-circle"></i> Забронировать можно только свободное место</li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- 3 Основная область (справа) -->
+        <main class="main-content">
+            <!-- 3.1 Панель управления - форма нового бронирования -->
+            <div class="control-panel card">
+                <div class="control-header">
+                    <h2><i class="fas fa-calendar-plus"></i> Новое бронирование</h2>
+                    <div class="branch-selector">
+                        <label for="branch-select">Филиал:</label>
+                        <select id="branch-select" class="form-control">
+                            <option value="moscow">Москва - Центральный офис</option>
+                            <option value="spb">Санкт-Петербург - Филиал</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="booking-controls">
+                    <!-- Радио-кнопки для выбора типа места -->
+                    <div class="booking-type">
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="resourceType" value="workplace" checked>
+                                <span class="radio-custom"></span>
+                                <i class="fas fa-desktop"></i> Рабочее место
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="resourceType" value="negotiation">
+                                <span class="radio-custom"></span>
+                                <i class="fas fa-comments"></i> Переговорная
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="resourceType" value="conference">
+                                <span class="radio-custom"></span>
+                                <i class="fas fa-video"></i> Конференц-зал
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Выпадающий список с конкретными местами -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="resource-select"><i class="fas fa-map-pin"></i> Выберите место:</label>
+                            <select id="resource-select" class="form-control">
+                                <option value="">-- Выберите место --</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Поле выбора даты -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="booking-date"><i class="fas fa-calendar"></i> Дата:</label>
+                            <input type="text" id="booking-date" class="form-control date-picker" placeholder="Выберите дату">
+                        </div>
+                    </div>
+
+                    <!-- Поля выбора времени начала и конца -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="start-time"><i class="fas fa-clock"></i> Начало:</label>
+                            <select id="start-time" class="form-control time-select">
+                                <!-- Заполнится через JS -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="end-time"><i class="fas fa-clock"></i> Конец:</label>
+                            <select id="end-time" class="form-control time-select">
+                                <!-- Заполнится через JS -->
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Поле для ввода цели бронирования -->
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="purpose"><i class="fas fa-sticky-note"></i> Цель:</label>
+                            <input type="text" id="purpose" class="form-control" placeholder="Введите цель бронирования">
+                        </div>
+                    </div>
+                    
+                    <!-- Кнопки действий -->
+                    <div class="form-buttons">
+                        <button id="check-btn" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Проверить доступность
+                        </button>
+                        <button id="book-btn" class="btn btn-success">
+                            <i class="fas fa-check"></i> Забронировать
+                        </button>
+                    </div>
+                    
+                    <!-- Блок для отображения сообщений (успех/ошибка) -->
+                    <div id="status-message" class="status-message"></div>
+                </div>
+            </div>
+
+            <!-- 3.2 Карта офиса -->
+            <div class="office-map-container card">
+                <div class="map-header">
+                    <h2><i class="fas fa-map"></i> <span id="map-title">План офиса Москва</span></h2>
+                    <!-- Кнопки управления картой (масштаб, сетка) -->
+                    <div class="map-controls">
+                        <button id="zoom-in" class="btn btn-sm"><i class="fas fa-search-plus"></i></button>
+                        <button id="zoom-out" class="btn btn-sm"><i class="fas fa-search-minus"></i></button>
+                        <button id="reset-view" class="btn btn-sm"><i class="fas fa-sync-alt"></i></button>
+                        <button id="toggle-grid" class="btn btn-sm"><i class="fas fa-th"></i></button>
+                    </div>
+                </div>
+                
+                <div class="office-map" id="office-map">
+                    <!-- Сюда JS загрузит изображение карты офиса -->
+                    <div class="map-placeholder">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Загрузка карты офиса...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 4. Модальное окно подтверждения -->
+    <div id="booking-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-calendar-check"></i> Подтверждение бронирования</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-details"></div>  <!-- Сюда JS подставит детали брони -->
+            </div>
+            <div class="modal-footer">
+                <button id="confirm-booking" class="btn btn-primary">Подтвердить</button>
+                <button id="cancel-modal" class="btn btn-secondary">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Подключение скриптов -->
+    <!-- Сторонние библиотеки -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script> <!-- Русская локализация -->
+    
+    <!-- Наши скрипты (порядок важен!) -->
+    <script src="js/dashboard.js"></script>    <!-- Основная логика страницы - должен быть первым -->
+    <script src="js/office-map.js"></script>   <!-- Логика карты офиса -->
+    <script src="js/mock-api.js"></script>     <!-- Взаимодействие с бэкендом -->
+</body>
+</html>

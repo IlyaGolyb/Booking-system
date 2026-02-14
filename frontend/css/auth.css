@@ -1,0 +1,157 @@
+/**
+ * auth.css - Стили для страницы авторизации
+ * Содержит уникальные стили для формы входа,
+ * подключается только к login.html
+ */
+
+/* Сброс стандартных стилкй */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;  /* Паддинги и бордеры не увеличивают ширину элемента */
+}
+
+/* Базовые стили страницы*/
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);  /* Градиентный фон */
+    min-height: 100vh;                     /* Минимальная высота = весь экран */
+    display: flex;
+    align-items: center;                    
+    justify-content: center;                 
+    padding: 20px;                           /* Отступы на мобильных */
+}
+
+/* Контейнер формы входа*/
+.login-container {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);  /* Глубокая тень для объёма */
+    padding: 40px;
+    width: 100%;
+    max-width: 450px;                         
+    animation: slideIn 0.5s ease-out;          /* Анимация появления */
+}
+
+/* Анимация появления формы */
+@keyframes slideIn {
+    from {
+        opacity: 0;                           /* Начинаем с прозрачного */
+        transform: translateY(-30px);          /* Сдвиг вверх */
+    }
+    to {
+        opacity: 1;                           /* Заканчиваем видимым */
+        transform: translateY(0);               /* На исходной позиции */
+    }
+}
+
+/* Заголовок формы */
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-header h1 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.login-header p {
+    color: #7f8c8d;
+    font-size: 14px;
+}
+
+/* Элементы формы */
+.login-form {
+    display: flex;
+    flex-direction: column;                   /* Элементы друг под другом */
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;                   /* Лейбл над полем */
+    gap: 8px;
+}
+
+.form-group label {
+    color: #34495e;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;                                  /* Отступ между иконкой и текстом */
+}
+
+.form-group input {
+    padding: 14px;                              /* Увеличенные поля для удобства */
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #3498db;                      /* Синяя подсветка при фокусе */
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);  /* Лёгкое свечение */
+}
+
+/* Кнопка входа (переопределение базового стиля для страницы авторизации) */
+.btn-primary {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    border: none;
+    padding: 16px;                               /* Более крупная кнопка */
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s;
+    margin-top: 10px;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #2980b9, #1c5c82);
+    transform: translateY(-2px);                  /* Лёгкий подъём при наведении */
+    box-shadow: 0 5px 15px rgba(41, 128, 185, 0.4);  /* Тень для объёма */
+}
+
+/* Дополнительные блоки */
+/* Блок с тестовыми учётными данными */
+.demo-credentials {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    border-left: 4px solid #3498db;              /* Цветная полоска слева */
+    margin-top: 10px;
+}
+
+.demo-credentials h4 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.demo-credentials p {
+    color: #555;
+    font-size: 13px;
+    margin: 5px 0;
+}
+
+/* Блок с сообщением об ошибке */
+.error-message {
+    background: #ffeaea;                          /* Светло-красный фон */
+    color: #e74c3c;                               /* Красный текст */
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ffcccc;                    /* Тонкая рамка */
+    display: none;                                 /* Скрыто по умолчанию */
+    margin-top: 10px;
+    font-size: 14px;
+}

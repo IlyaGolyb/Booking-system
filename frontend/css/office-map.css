@@ -1,0 +1,823 @@
+/**
+ * office-map.css - Стили для карты офиса и панели управления
+ * Содержит стили для отображения карты, управления масштабом,
+ * а также для всех элементов интерфейса бронирования
+ */
+
+/* Глобальные переменные*/
+:root {
+    /* Основная цветовая палитра (переопределяется из style.css для локального использования) */
+    --primary-color: #3498db;      
+    --primary-dark: #2980b9;        
+    --secondary-color: #2ecc71;     /* Зелёный для второстепенных действий */
+    --danger-color: #e74c3c;        /* Красный для опасных действий */
+    --warning-color: #f39c12;        /* Оранжевый для предупреждений */
+    --dark-color: #2c3e50;          /* Тёмно-синий для текста */
+    --light-color: #ecf0f1;          /* Светло-серый для фонов */
+    --gray-color: #95a5a6;          /* Серый для второстепенного текста */
+    --border-color: #ddd;            /* Цвет границ */
+    --success-color: #27ae60;        /* Зелёный для сообщений об успехе */
+
+    /* Размеры элементов */
+    --btn-padding: 8px 20px;         /* Отступы внутри кнопок */
+    --input-padding: 10px;           /* Отступы внутри полей ввода */
+    --font-size-normal: 14px;        /* Основной размер текста */
+    --font-size-large: 16px;         /* Увеличенный размер текста */
+}
+
+/* Шапка сайта */
+.header {
+    background: white;
+    padding: 12px 25px;
+    display: flex;
+    justify-content: space-between;  /* Лого слева, пользователь справа */
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);  /* Лёгкая тень */
+    position: sticky;                  /* Фиксируется при прокрутке */
+    top: 0;
+    z-index: 100;                      /* Поверх остального контента */
+}
+
+.header-left h1 {
+    font-size: 18px;
+    margin: 0;
+    color: var(--dark-color);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-info i {
+    font-size: 22px;
+    color: var(--primary-color);
+}
+
+/* Кнопки */
+/* Базовый стиль всех кнопок */
+.btn {
+    padding: var(--btn-padding);
+    border: none;
+    border-radius: 6px;
+    font-size: var(--font-size-normal);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;              /* Плавные переходы */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex: 0 0 auto;                     /* Не растягиваются */
+    min-width: 140px;                   /* Минимальная ширина для удобства клика */
+}
+
+.btn:hover {
+    transform: translateY(-2px);        /* Лёгкий подъём при наведении */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.btn:active {
+    transform: translateY(0);            /* Возврат при нажатии */
+}
+
+/* Синяя кнопка — основное действие */
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--primary-dark), #1c5c82);
+}
+
+/* Зелёная кнопка — успешное действие */
+.btn-success {
+    background: linear-gradient(135deg, var(--success-color), #229954);
+    color: white;
+}
+
+/* Серая кнопка — второстепенное действие */
+.btn-secondary {
+    background: #f8f9fa;
+    color: var(--dark-color);
+    border: 1px solid var(--border-color);
+}
+
+/* Красная кнопка — опасное действие (отмена, удаление) */
+.btn-danger {
+    background: var(--danger-color);
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c0392b;
+}
+
+/* Контейнер для кнопок в форме бронирования */
+.form-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    justify-content: flex-start;        /* Кнопки слева */
+}
+
+/* Маленькие кнопки (для управления картой) */
+.btn-sm {
+    padding: 4px 10px;
+    font-size: 12px;
+    min-width: auto;                    /* Без минимальной ширины */
+}
+
+/* ===== ОСНОВНОЙ КОНТЕЙНЕР ===== */
+.container {
+    display: flex;
+    min-height: calc(100vh - 60px);     /* Высота = весь экран минус шапка */
+    padding: 15px;
+    gap: 15px;
+}
+
+/* ===== БОКОВАЯ ПАНЕЛЬ ===== */
+.sidebar {
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sidebar h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    color: var(--dark-color);
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Блок информации о пользователе */
+#user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#user-info div {
+    display: flex;
+    justify-content: space-between;     /* Метка слева, значение справа */
+}
+
+#user-info .label {
+    color: var(--gray-color);
+    font-size: 13px;
+}
+
+#user-info .value {
+    font-weight: 500;
+    color: var(--dark-color);
+    font-size: 13px;
+}
+
+/* Фильтр по филиалу в "Мои бронирования" */
+.branch-filter {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.branch-filter label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--dark-color);
+}
+
+/* Уменьшенный select для фильтра */
+.form-control-sm {
+    padding: 5px 10px;
+    font-size: 13px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: white;
+    flex: 1;
+    height: 32px;
+}
+
+/* Список бронирований с прокруткой */
+.bookings-list {
+    max-height: 350px;                  /* Максимальная высота, затем прокрутка */
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Одна карточка бронирования */
+.booking-item {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    margin-bottom: 8px;
+    background: #f8f9fa;
+    transition: all 0.2s;
+}
+
+.booking-item:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.booking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.booking-resource {
+    font-weight: 600;
+    color: var(--dark-color);
+    font-size: 14px;
+}
+
+/* Метка филиала в бронировании */
+.booking-branch {
+    font-size: 11px;
+    padding: 2px 6px;
+    background: #e3f2fd;
+    color: var(--primary-color);
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+/* Статус бронирования */
+.booking-status {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 500;
+    background: var(--success-color);    /* Всегда зелёный (только активные) */
+}
+
+/* Детали бронирования */
+.booking-details {
+    font-size: 13px;
+    color: var(--gray-color);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+/* Кнопка отмены бронирования */
+.btn-cancel {
+    padding: 5px 10px;
+    font-size: 12px;
+    background: var(--danger-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-cancel:hover {
+    background: #c0392b;
+}
+
+/* Список правил */
+.rules-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.rules-list li {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+}
+
+.rules-list li:last-child {
+    border-bottom: none;
+}
+
+.rules-list li i {
+    color: var(--success-color);
+}
+
+/* Основная область */
+.main-content {
+    flex: 1;                            /* Занимает всё оставшееся пространство */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Панель управления (форма нового бронирования) */
+.control-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-left: 6px solid var(--primary-color);  /* Цветная полоска слева */
+    padding: 20px;
+}
+
+.control-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.control-header h2 {
+    margin: 0;
+    font-size: 20px;
+    color: var(--dark-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.branch-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.branch-selector label {
+    font-weight: 600;
+    color: var(--dark-color);
+}
+
+.booking-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ===== РАДИО-КНОПКИ ===== */
+.radio-group {
+    display: flex;
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.radio-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    flex: 0 1 auto;
+    text-align: center;
+    background: white;
+    min-width: 150px;                   /* Минимальная ширина для удобства */
+}
+
+.radio-label:hover {
+    border-color: var(--primary-color);
+    background: #f0f8ff;
+    transform: translateY(-2px);
+}
+
+/* Прячем стандартные радио-кнопки */
+.radio-label input[type="radio"] {
+    display: none;
+}
+
+/* Кастомная радио-кнопка (кружок) */
+.radio-custom {
+    width: 15px;
+    height: 15px;
+    border: 3px solid var(--border-color);
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.radio-label i {
+    font-size: 20px;
+    color: var(--gray-color);
+    transition: all 0.3s;
+}
+
+/* Текст в радио-кнопке */
+.radio-label span:not(.radio-custom) {
+    font-size: var(--font-size-normal);
+    font-weight: 500;
+    color: var(--dark-color);
+}
+
+/* Состояние "выбрано" */
+.radio-label input[type="radio"]:checked + .radio-custom {
+    border-color: var(--primary-color);
+}
+
+.radio-label input[type="radio"]:checked + .radio-custom::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 10px;
+    height: 10px;
+    background: var(--primary-color);
+    border-radius: 50%;
+}
+
+.radio-label input[type="radio"]:checked ~ i,
+.radio-label input[type="radio"]:checked ~ span:not(.radio-custom) {
+    color: var(--primary-color);
+}
+
+/* ===== ФОРМА БРОНИРОВАНИЯ ===== */
+.form-row {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.form-group {
+    flex: 1;
+}
+
+/* Поля фиксированной ширины (место, дата, время) */
+.form-group:not(.full-width) {
+    flex: 0 0 auto;
+    width: 210px;
+}
+
+/* Поле "Цель" — шире */
+.form-group.full-width {
+    flex: 0 0 auto;
+    width: 300px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--dark-color);
+    font-size: var(--font-size-normal);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;                /* Текст не переносится */
+}
+
+/* Поля ввода */
+.form-control {
+    width: 100%;
+    padding: var(--input-padding);
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    font-size: var(--font-size-normal);
+    transition: all 0.3s;
+    height: 42px;
+    background: white;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+/* Кастомная стрелка для select */
+select.form-control {
+    padding-right: 40px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 16px;
+    appearance: none;                    /* Убираем стандартную стрелку браузера */
+}
+
+/* Специальный класс для select'ов времени */
+.time-select {
+    min-width: 120px;
+}
+
+/* Кнопка "Забронировать" (изначально скрыта) */
+#book-btn {
+    display: none;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+/* Показывается после проверки доступности */
+#book-btn.visible {
+    display: inline-flex;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Блок с сообщением о статусе */
+.status-message {
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    font-size: var(--font-size-normal);
+    display: none;
+}
+
+.status-message i {
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.status-message.success {
+    background: #d4edda;                 /* Зелёный фон */
+    color: #155724;                       /* Тёмно-зелёный текст */
+    border: 1px solid #c3e6cb;
+    display: block;
+}
+
+.status-message.error {
+    background: #f8d7da;                 /* Красный фон */
+    color: #721c24;                       /* Тёмно-красный текст */
+    border: 1px solid #f5c6cb;
+    display: block;
+}
+
+/* Карта офиса */
+.office-map-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+}
+
+.map-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.map-header h2 {
+    margin: 0;
+    font-size: 20px;
+    color: var(--dark-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#map-title {
+    font-weight: 600;
+}
+
+/* Кнопки управления картой */
+.map-controls {
+    display: flex;
+    gap: 5px;
+}
+
+/* Контейнер карты */
+.office-map {
+    width: 100%;
+    height: 500px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    overflow: hidden;                    /* Чтобы изображение не вылезало */
+    position: relative;
+}
+
+/* Заглушка во время загрузки карты */
+.map-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--gray-color);
+    gap: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #f8f9fa;
+    z-index: 1;
+}
+
+.map-placeholder i {
+    font-size: 28px;
+}
+
+/* Контейнер для изображения карты */
+.map-image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Само изображение карты */
+.map-image {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    margin: 0 auto;
+    transition: transform 0.3s;          /* Плавное масштабирование */
+}
+
+/* Оверлей для маркеров (не используется, но оставлен) */
+.map-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* Оверлей для сетки */
+.map-grid-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+    display: none;                        /* Скрыта по умолчанию */
+}
+
+.map-grid-overlay.visible {
+    display: block;                       /* Показывается при включении */
+}
+
+/* Модальное окно потверждения */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    width: 90%;
+    max-width: 450px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-title {
+    margin: 0;
+    font-size: 18px;
+    color: var(--dark-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--gray-color);
+    transition: color 0.3s;
+}
+
+.modal-close:hover {
+    color: var(--danger-color);
+}
+
+.modal-body {
+    margin-bottom: 15px;
+}
+
+.booking-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.booking-summary h4 {
+    margin: 0 0 8px 0;
+    color: var(--dark-color);
+    font-size: 16px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.summary-item:last-child {
+    border-bottom: none;
+}
+
+.summary-item strong {
+    color: var(--dark-color);
+    font-weight: 600;
+}
+
+.summary-item span {
+    color: #666;
+    text-align: right;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Адаптивность */
+/* Для планшетов и небольших экранов */
+@media (max-width: 1200px) {
+    .container {
+        flex-direction: column;          /* Боковая панель сверху */
+    }
+    
+    .sidebar {
+        width: 100%;                      /* На всю ширину */
+    }
+    
+    .form-row {
+        flex-direction: column;           /* Поля друг под другом */
+    }
+}
+
+/* Для мобильных устройств */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+        padding: 10px 15px;
+    }
+    
+    .control-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+    
+    .radio-group {
+        flex-direction: column;           /* Радио-кнопки друг под другом */
+    }
+    
+    .form-buttons {
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .btn {
+        width: 100%;                       /* Кнопки на всю ширину */
+        min-width: unset;
+    }
+    
+    .map-legend {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .office-map {
+        height: 350px;                     /* Уменьшенная высота карты */
+    }
+}
